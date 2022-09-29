@@ -8,6 +8,11 @@ const userSchema = new Schema(
       // unique: true -> Ideally, should be unique, but its up to you
     },
     password: String,
+    email: String,
+    phone: Number,
+    about: String,
+    reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+    list: { type: Schema.Types.ObjectId, ref: "List" },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
