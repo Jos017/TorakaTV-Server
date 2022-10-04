@@ -11,7 +11,7 @@ const userSchema = new Schema(
     email: String,
     phone: Number,
     about: String,
-    reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+    comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
     list: { type: Schema.Types.ObjectId, ref: "List" },
   },
   {
