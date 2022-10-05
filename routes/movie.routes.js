@@ -6,30 +6,32 @@ const User = require("../models/User.model");
 router.post("/:tmdbId/comments", (req, res, next) => {
   const { tmdbId } = req.params;
   const { description, userId } = req.body;
-  Comment.create({ description, tmdbId, user: userId }).then((newComment) => {
-    return User.findByIdAndUpdate(
-      userId,
-      {
-        $push: { comments: newComment._id },
-      },
-      { new: true }
-    )
-      .then(() => res.json(newComment))
-      .catch((err) => res.json(err));
-  });
+  Comment.create({ description, tmdbId, user: userId })
+    .then((comment) => {
+      console.log(comment);
+      Comment.findById(comment.id)
+        .populate("user", "username")
+        .then((newComment) => {
+          User.findByIdAndUpdate(
+            userId,
+            {
+              $push: { comments: newComment._id },
+            },
+            { new: true }
+          )
+            .then(() => res.json(newComment))
+            .catch((err) => res.json(err));
+        });
+    })
+    .catch((err) => res.json(err));
 });
 
 // Read comments per movie
 router.get("/:tmdbId/comments/", (req, res, next) => {
   const { tmdbId } = req.params;
   Comment.find({ tmdbId: tmdbId })
-    .then((movieComments) => {
-      movieComments.length
-        ? res.json(movieComments)
-        : res.json(
-            "There is no comment for this movie at this moment, try again later"
-          );
-    })
+    .populate("user", "username")
+    .then((movieComments) => res.json(movieComments))
     .catch((err) => res.json(err));
 });
 
@@ -43,22 +45,23 @@ router.get("/comments", (req, res, next) => {
 router.put("/comments/update", (req, res, next) => {
   const { description, commentId } = req.body;
   Comment.findByIdAndUpdate(commentId, { description }, { new: true })
+    .populate("user", "username")
     .then((response) => res.json(response))
     .catch((err) => res.json(err));
 });
 
 // Delete a comment
-router.delete("/comments/delete", (req, res, next) => {
-  const { commentId, userId } = req.body;
-  Comment.findByIdAndDelete(commentId).then(() => {
+router.delete("/comments/delete/:commentId", (req, res, next) => {
+  const { commentId } = req.params;
+  Comment.findByIdAndDelete(commentId).then((deletedComment) => {
     return User.findByIdAndUpdate(
-      userId,
+      deletedComment.user,
       {
         $pull: { comments: commentId },
       },
       { new: true }
     )
-      .then((response) => res.json(response))
+      .then(() => res.json(deletedComment))
       .catch((err) => res.json(err));
   });
 });
