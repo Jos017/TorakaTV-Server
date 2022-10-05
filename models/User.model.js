@@ -12,7 +12,7 @@ const userSchema = new Schema(
     phone: Number,
     about: String,
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
-    list: { type: Schema.Types.ObjectId, ref: "List" },
+    list: [{ type: Schema.Types.ObjectId, ref: "ListItem" }],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
