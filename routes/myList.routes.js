@@ -52,6 +52,15 @@ router.get("/:userId", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
+// Obtain true or false if a item is already in the list
+router.get("/:tmdbId/:userId/check", (req, res, next) => {
+  const { tmdbId, userId } = req.params;
+  ListItem.find({ user: userId, tmdbId: tmdbId })
+    .populate("user", "username")
+    .then((response) => (response.length ? res.json(true) : res.json(false)))
+    .catch((err) => res.json(err));
+});
+
 router.put("/update/:itemId", (req, res, next) => {
   const { itemId } = req.params;
   const { status, progress } = req.body;
