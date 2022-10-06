@@ -7,6 +7,8 @@ const userSchema = new Schema(
       type: String,
       // unique: true -> Ideally, should be unique, but its up to you
     },
+    firstName: String,
+    lastName: String,
     password: String,
     email: String,
     phone: Number,
