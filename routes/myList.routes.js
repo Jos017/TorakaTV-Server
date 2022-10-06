@@ -13,6 +13,7 @@ router.post("/:tmdbId/add", (req, res, next) => {
     ranking,
     userId,
     totalProgress,
+    img,
   } = req.body;
   ListItem.create({
     title,
@@ -22,6 +23,7 @@ router.post("/:tmdbId/add", (req, res, next) => {
     progress,
     totalProgress,
     ranking,
+    img,
     user: userId,
   })
     .then((item) => {

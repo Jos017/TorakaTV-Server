@@ -7,12 +7,13 @@ const listItemSchema = new Schema(
     categories: [""],
     status: {
       type: String,
-      enum: ["watching", "completed", "onHold", "dropped", "toWatch"],
+      enum: ["watching", "completed", "on hold", "dropped", "to watch"],
       default: "watching",
     },
     progress: Number,
     totalProgress: Number,
     ranking: Number,
+    img: String,
     user: { type: Schema.Types.ObjectId, ref: "User" },
   },
   {
