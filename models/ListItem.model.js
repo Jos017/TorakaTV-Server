@@ -14,6 +14,7 @@ const listItemSchema = new Schema(
     totalProgress: Number,
     ranking: Number,
     img: String,
+    type: String,
     user: { type: Schema.Types.ObjectId, ref: "User" },
   },
   {
