@@ -13,4 +13,12 @@ router.put("/edit", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
+// Obtain user info
+router.get("/:userId", (req, res, next) => {
+  const { userId } = req.params;
+  User.findById(userId)
+    .then((response) => res.json(response))
+    .catch((err) => res.json(err));
+});
+
 module.exports = router;
